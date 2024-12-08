@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mhkl ads</title>
+    <title>MHKL ADS</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -36,8 +36,14 @@
   </head>
   <body>
     <h1>MHKL ADS</h1>
-    <p>Watched Ads: <span id="watchedAds">0</span></p>
-    <p>Earned Points: <span id="earnedPoints">0</span></p>
+    <p>
+      Watched Ads: 
+      <span id="watchedAds" aria-live="polite">0</span>
+    </p>
+    <p>
+      Earned Points: 
+      <span id="earnedPoints" aria-live="polite">0</span>
+    </p>
     <button class="button watch-ad" onclick="showAd()">Watch Ad</button>
     <button class="button auto-show" onclick="startAutoAds()">Auto Show Ads</button>
     <button class="button stop-auto" onclick="stopAutoAds()">Stop Auto Ads</button>
@@ -45,15 +51,21 @@
     <script>
       let watchedAds = 0;
       let earnedPoints = 0;
-      let autoShowInterval;
+      let autoShowInterval = null;
+      let adScriptAdded = false;
 
       function showAd() {
-        // Tambahkan skrip Monetag saat tombol ditekan
-        const script = document.createElement('script');
-        script.src = '//niphaumeenses.net/vignette.min.js';
-        script.setAttribute('data-zone', '8621206');
-        script.setAttribute('data-sdk', 'show_8621206');
-        document.body.appendChild(script);
+        if (!adScriptAdded) {
+          // Tambahkan skrip iklan hanya sekali
+          const script = document.createElement("script");
+          script.src = "//niphaumeenses.net/vignette.min.js";
+          script.setAttribute("data-zone", "8621206");
+          script.setAttribute("data-sdk", "show_8621206");
+          script.onload = () => console.log("Ad script loaded");
+          script.onerror = () => console.error("Failed to load ad script");
+          document.body.appendChild(script);
+          adScriptAdded = true;
+        }
 
         // Simulasi menonton iklan
         alert("Playing ad...");
@@ -64,13 +76,22 @@
 
       function startAutoAds() {
         if (!autoShowInterval) {
-          autoShowInterval = setInterval(showAd, 10000);
+          autoShowInterval = setInterval(() => {
+            try {
+              showAd();
+            } catch (error) {
+              console.error("Error showing ad:", error);
+              stopAutoAds();
+            }
+          }, 10000);
         }
       }
 
       function stopAutoAds() {
-        clearInterval(autoShowInterval);
-        autoShowInterval = null;
+        if (autoShowInterval) {
+          clearInterval(autoShowInterval);
+          autoShowInterval = null;
+        }
       }
 
       function updateUI() {
