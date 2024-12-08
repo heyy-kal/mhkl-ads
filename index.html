@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mhkl ads</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1e3a8a;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      .button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .watch-ad {
+        background-color: #e11d48;
+        color: white;
+      }
+      .auto-show {
+        background-color: #10b981;
+        color: white;
+      }
+      .stop-auto {
+        background-color: #f59e0b;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MHKL ADS</h1>
+    <p>Watched Ads: <span id="watchedAds">0</span></p>
+    <p>Earned Points: <span id="earnedPoints">0</span></p>
+    <button class="button watch-ad" onclick="showAd()">Watch Ad</button>
+    <button class="button auto-show" onclick="startAutoAds()">
+      Auto Show Ads
+    </button>
+    <button class="button stop-auto" onclick="stopAutoAds()">
+      Stop Auto Ads
+    </button>
+
+    <script>
+      let watchedAds = 0;
+      let earnedPoints = 0;
+      let autoShowInterval;
+
+      function showAd() {
+        alert("Playing ad...");
+        watchedAds++;
+        earnedPoints += 10;
+        updateUI();
+      }
+
+      function startAutoAds() {
+        if (!autoShowInterval) {
+          autoShowInterval = setInterval(showAd, 10000);
+        }
+      }
+
+      function stopAutoAds() {
+        clearInterval(autoShowInterval);
+        autoShowInterval = null;
+      }
+
+      function updateUI() {
+        document.getElementById("watchedAds").innerText = watchedAds;
+        document.getElementById("earnedPoints").innerText = earnedPoints;
+      }
+    </script>
+    <script
+      src="//niphaumeenses.net/vignette.min.js"
+      data-zone="8621206"
+      data-sdk="show_8621206"
+    ></script>
+  </body>
+</html>
