@@ -145,8 +145,8 @@
                     adsWatched++;
                     points += pointsPerAd;
 
-                    document.getElementById('ads-watched').innerText = `Ads Watched: ${adswatched}';
-                    document.getElementById('points-earned').innerText = `Points Earned: ${points}';
+                    document.getElementById('ads-watched').innerText = `Ads Watched: ${adsWatched}`;
+                    document.getElementById('points-earned').innerText = `Points Earned: ${points}`;
                     showToast('Ad watched successfully! Points earned.');
                 }).catch(() => showToast('Ad failed to load.'));
             }    
