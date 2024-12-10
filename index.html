@@ -1,106 +1,175 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MHKL</title>
-  <script src='//niphaumeenses.net/vignette.min.js' data-zone='8621206' data-sdk='show_8621206'></script>
+<script src='//niphaumeenses.net/vignette.min.js' data-zone='8621206' data-sdk='show_8621206'></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #1e3a8a;
-        color: white;
-        text-align: center;
-        padding: 20px;
-      }
-      .button {
-        padding: 10px 20px;
-        margin: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .watch-ad {
-        background-color: #e11d48;
-        color: white;
-      }
-      .auto-show {
-        background-color: #10b981;
-        color: white;
-      }
-      .stop-auto {
-        background-color: #f59e0b;
-        color: white;
-      }
+        /* General styling */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            text-align: center;
+        }    
+
+        /* Container styling */
+        .app-container {
+            background: #1a1a1a;
+            border-radius: 20px;
+            box-shadow: epx 1epx 3epx rgba(255, 165, 0, 0.5);
+            padding: 30px 20px;
+            width: 350px;
+            border: 2px solid #ff8c00;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #ff8c00;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }    
+
+        .developer-label {
+            margin-bottom: 30px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ff4500;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }    
+
+        /* Buttons */
+        .button {
+            display: block;
+            margin: 15px auto;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(145deg, #ff7e00, #ff4500);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: opx 6px 20px rgba(255, 165, 0, 0.6);
+        }
+
+        .button:hover {
+            transform: translateY(-4px) scale(1.05);
+            background: linear-gradient(145deg, #ff5e00, #ff7e00);
+            box-shadow: epx 10px 25px rgba(255, 165, 0, 0.8);
+        }    
+
+        .button:active {
+            transform: scale(0.98);
+        }    
+
+        /* Footer Design */
+        .footer {
+            margin-top: 20px;
+            color: #fff;
+            font-size: 14px;
+        }    
+
+        .footer a {
+            color: #ffa500;
+            text-decoration: none;
+            font-weight: bold;
+        }    
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Notification */
+        #toast {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translatex(-50%);
+            background: rgba(255, 69, 0, 0.8);
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 10px;
+            animation: fadernout 3s ease forwards;
+        }    
+
+        @keyframes fadeInout {
+            0% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+            100% { opacity: 0; }
+        }    
     </style>
-  </head>
-  <body>
-    <h1>MHKL</h1>
-    <p>
-      Watched Ads: 
-      <span id="watchedAds" aria-live="polite">0</span>
-    </p>
-    <p>
-      Earned Points: 
-      <span id="earnedPoints" aria-live="polite">0</span>
-    </p>
-    <button class="button watch-ad" onclick="showAd()">Watch Ad</button>
-    <button class="button auto-show" onclick="startAutoAds()">Auto Show Ads</button>
-    <button class="button stop-auto" onclick="stopAutoAds()">Stop Auto Ads</button>
+</head>
+<body>
+    <div class="app-container">
+        <h2>MHKL</h2>
+        <div class="developer-label">Developed by <a href="https://wa.me/628977000096" target="_blank" style="color:#fff;">BG KAL</a></div>
+
+        <l-- stats -->
+        <div class="stats">
+            <p id="ads-watched">watched Ads: 0</p>
+            <p id="points-earned">Earned Points: 0</p>
+        </div>
+
+        <!-- Buttons -->
+        <button class="button" onclick="watchAd()">watch Adc</button>
+        <button class="button" onclick="autoAds()">Auto Show Ads</button>
+        <button class="button" onclick="stopAutoAds()">stop Auto Ads</button>
+    </div>
+
+
+
+    <div id="toast"></div>
 
     <script>
-      let watchedAds = 0;
-      let earnedPoints = 0;
-      let autoShowInterval = null;
-      let adScriptAdded = false;
+        let adswatched =0;
+        let points =0;
+        const pointsPerAd = 10;
+        let autoAdsinterval;
 
-      function showAd() {
-        if (typeof show_8621206 === function) { 
-            show_8621206().then(() => {
-              
-    alert('You have seen ad ad!');
-})
-          const script = document.createElement("script");
-          script.src = "//niphaumeenses.net/vignette.min.js";
-          script.setAttribute("data-zone", "8621206");
-          script.setAttribute("data-sdk", "show_8621206");
-          script.onload = () => console.log("Ad script loaded");
-          script.onerror = () => console.error("Failed to load ad script");
-          document.body.appendChild(script);
-          adScriptAdded = true;
+        function watchAd() {
+            if (typeof show_8551132 === 'function') {
+                show_8621206().then(() => {
+                    adsWatched++;
+                    points += pointsPerAd;
+
+                    document.getElementById('ads-watched').innerText = `Ads Watched: ${adswatched}';
+                    document.getElementById('points-earned').innerText = 'Points Earned: ${points}';
+                    showToast('Ad watched successfully! Points earned.');
+                }).catch(() => showToast('Ad failed to load.'));
+            }    
+        }   
+
+        function autoAds() {
+            autoAdsInterval= setInterval(watchAd, 2000);
         }
 
-        alert("Playing ad...");
-        watchedAds++;
-        earnedPoints += 10;
-        updateUI();
-      }
+        function stopAutoAds() {
+            clearInterval(autoAdsInterval);
+            showToast('Auto Ads Stopped');
+        }    
 
-      function startAutoAds() {
-        if (!autoShowInterval) {
-          autoShowInterval = setInterval(() => {
-            try {
-              showAd();
-            } catch (error) {
-              console.error("Error showing ad:", error);
-              stopAutoAds();
-            }
-          }, 10000);
-        }
-      }
-
-      function stopAutoAds() {
-        if (autoShowInterval) {
-          clearInterval(autoShowInterval);
-          autoShowInterval = null;
-        }
-      }
-
-      function updateUI() {
-        document.getElementById("watchedAds").innerText = watchedAds;
-        document.getElementById("earnedPoints").innerText = earnedPoints;
-      }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(()=> {
+                toast.style.display = 'none'
+            }, 3000);
+        }        
     </script>
-  </body>
+</body>
 </html>
