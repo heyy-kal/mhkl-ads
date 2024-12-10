@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MHKL ADS</title>
+    <title>MHKL</title>
+  <script src='//niphaumeenses.net/vignette.min.js' data-zone='8621206' data-sdk='show_8621206'></script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -35,7 +36,7 @@
     </style>
   </head>
   <body>
-    <h1>MHKL ADS</h1>
+    <h1>MHKL</h1>
     <p>
       Watched Ads: 
       <span id="watchedAds" aria-live="polite">0</span>
@@ -55,8 +56,12 @@
       let adScriptAdded = false;
 
       function showAd() {
-        if (!adScriptAdded) {
-          // Tambahkan skrip iklan hanya sekali
+        if (typeof show_8621206 === function) { 
+            show_8621206().then(() => {
+    // You need to add your user reward function here, which will be executed after the user watches the ad.
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen ad ad!');
+})
           const script = document.createElement("script");
           script.src = "//niphaumeenses.net/vignette.min.js";
           script.setAttribute("data-zone", "8621206");
